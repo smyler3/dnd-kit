@@ -300,12 +300,18 @@ export class DragActions<
 
       dragOperation.canceled = args.canceled ?? false;
 
-      this.manager.monitor.dispatch('dragend', {
+      const event = {
         nativeEvent: args.event,
         operation: dragOperation.snapshot(),
         canceled: args.canceled ?? false,
+        cancel() {
+          dragOperation.canceled = true;
+          event.canceled = true;
+        },
         suspend,
-      });
+      };
+
+      this.manager.monitor.dispatch('dragend', event);
 
       if (promise) {
         promise.then(end).catch(() => dragOperation.reset());

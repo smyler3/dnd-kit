@@ -132,25 +132,25 @@ export class OptimisticSortingPlugin extends Plugin<DragDropManager> {
         });
       }),
       manager.monitor.addEventListener('dragend', (event, manager) => {
-        if (!event.canceled) {
-          return;
-        }
-
-        const {dragOperation} = manager;
-        const {source} = dragOperation;
-
-        if (!isSortable(source)) {
-          return;
-        }
-
-        if (
-          source.sortable.initialIndex === source.sortable.index &&
-          source.sortable.initialGroup === source.sortable.group
-        ) {
-          return;
-        }
-
         queueMicrotask(() => {
+          if (!event.canceled) {
+            return;
+          }
+
+          const {dragOperation} = manager;
+          const {source} = dragOperation;
+
+          if (!isSortable(source)) {
+            return;
+          }
+
+          if (
+            source.sortable.initialIndex === source.sortable.index &&
+            source.sortable.initialGroup === source.sortable.group
+          ) {
+            return;
+          }
+
           const instances = getSortableInstances();
           const sortableIndices = getSortableIndices(instances);
           const initialGroupInstances = instances.get(

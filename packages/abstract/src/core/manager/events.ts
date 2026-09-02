@@ -125,6 +125,7 @@ export type DragDropEventMap<
     operation: DragOperationSnapshot<T, U>;
     nativeEvent?: Event;
     canceled: boolean;
+    cancel(): void;
     suspend(): {resume(): void; abort(): void};
   };
 };
